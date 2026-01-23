@@ -18,7 +18,7 @@ Make sure that the provided addresses are reachable.
 ## Usage
 This script is designed to be used with cron. You could for example run this every 15 minutes by running `crontab -e` and inputting this:
 ```
-*/15 * * * * python3 /path/to/main.py
+*/15 * * * * python3 /path/to/qbittorrent-port.py
 ```
 However, you can also just use this manually. Typical output of the script looks something like this:
 ```
