@@ -1,12 +1,11 @@
 import requests
+import json
 
 gluetun = "http://localhost:8003"       # Gluetun API address
 qbittorrent = "http://localhost:8081"   # qBittorrent Web UI/API address
 qbittorrent_user = "admin"              # qBittorrent username
 qbittorrent_pass = "adminadmin"         # qBittorrent password
 
-# TODO:
-# error handling (status codes, try/except)
 
 def getGluetun():
     """
@@ -48,12 +47,11 @@ def changePort(cookies, gluetun_port):
         cookies: login cookie from torrentLogin()
         gluetun_port: the port number to change the qBittorrent port to
     """
-    net = requests.get(
-        f"{qbittorrent}/api/v2/app/preferences", cookies=cookies)
+    net = requests.get(f"{qbittorrent}/api/v2/app/preferences", cookies=cookies)
     torrent_port = net.json()["listen_port"]
     print(f"qBittorrent listening port: {torrent_port}")
     if torrent_port != gluetun_port:
-        requests.post(f"{qbittorrent}/api/v2/app/setPreferences", cookies=cookies, json={"listen_port": gluetun_port})
+        requests.post(f"{qbittorrent}/api/v2/app/setPreferences", cookies=cookies, data={"json": json.dumps({"listen_port": gluetun_port})})
         if requests.get(f"{qbittorrent}/api/v2/app/preferences", cookies=cookies).json()["listen_port"] == gluetun_port:
             print(f"Success! qBittorrent port changed to {gluetun_port}")
         else:
